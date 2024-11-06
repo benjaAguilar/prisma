@@ -2,19 +2,26 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-async function main() {
-    await prisma.user.create({
+async function main() { 
+    await prisma.user.update({
+        where: {
+            id: 1
+        },
         data: {
-            name: 'Ricardo',
-            email: "ric@ric.com",
+            posts: {
+                create: {
+                    title: 'Ricardo just created a personal post!'
+                }
+            }
         }
-    });
-    
+    })
+
     const user = await prisma.user.findMany({include: {
         posts: true
     }});
     
     console.log(user);
+    console.dir(user[0].posts);
 }
 
 main()
